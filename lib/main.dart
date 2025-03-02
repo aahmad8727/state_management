@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key); // Added key parameter for good practice
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,13 @@ class MyApp extends StatelessWidget {
 class Task {
   String name;
   bool completed;
-  String priority; // Optionally, you can use an enum for priority
+  String priority;
 
-  // All parameters are required and must not be null
   Task({required this.name, this.completed = false, this.priority = 'Low'});
 }
 
 class TaskListScreen extends StatefulWidget {
-  TaskListScreen({Key? key}) : super(key: key); // Added key parameter
+  TaskListScreen({Key? key}) : super(key: key);
 
   @override
   _TaskListScreenState createState() => _TaskListScreenState();
@@ -58,14 +57,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onSubmitted: (value) {
-                addTask(value, 'Low'); // Default priority to 'Low' for now
+                addTask(value, 'Low'); // Default priority to 'Low'
               },
               decoration: InputDecoration(
                 labelText: 'Enter task name',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
-                    // This can be updated to handle button press for adding tasks
+                    // This should be updated to handle the button press for adding tasks
+                    // Currently does nothing on button press
                   },
                 ),
               ),
@@ -79,13 +79,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   title: Text(tasks[index].name),
                   subtitle: Text('Priority: ${tasks[index].priority}'),
                   trailing: Wrap(
-                    spacing: 12, // space between two icons
+                    spacing: 12,
                     children: <Widget>[
-                      Icon(
-                        tasks[index].completed
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank,
-                        color: tasks[index].completed ? Colors.green : null,
+                      Checkbox(
+                        value: tasks[index].completed,
+                        onChanged: (_) {
+                          toggleComplete(index);
+                        },
                       ),
                       IconButton(
                         icon: Icon(Icons.delete),
@@ -95,9 +95,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       ),
                     ],
                   ),
-                  onTap: () {
-                    toggleComplete(index);
-                  },
                 );
               },
             ),
